@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const userRouter = require('./users-router');
-const photosRouter = require('./photos-router');
-const commentsRouter = require('./comments-router');
+
+
 
 const authMiddleware = require('../middlewares/authentication-middleware');
 const errorMiddleware = require('../middlewares/error-middleware');
@@ -13,8 +13,8 @@ router.post('/users/register', UsersController.signUp);
 
 router.use(authMiddleware);
 router.use('/users', userRouter);
-router.use('/photos', photosRouter);
-router.use('/comments', commentsRouter);
+// router.use('/photos', photosRouter);
+// router.use('/comments', commentsRouter);
 
 
 router.use(errorMiddleware);

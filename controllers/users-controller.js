@@ -1,37 +1,38 @@
 const { hash, compare } = require('../helpers/hash');
 const { sign, verify } = require('../helpers/jwt');
 const { User } = require('../models/index');
+const convertRupiah = require('rupiah-format')
 
 class UsersController {
     static async signUp(req, res, next){
-        const { email, full_name, username, password, profile_image_url, age, phone_number } = req.body;
-        const hashedPassword = hash(password);
+        const { full_name, password, gender, email } = req.body;
         try {
-            const user = await User.create(
+            const userRes = await User.create(
                 {
-                    email: email,
-                    full_name: full_name,
-                    username: username,
-                    password: hashedPassword,
-                    profile_image_url: profile_image_url,
-                    age: age,
-                    phone_number: phone_number
+                    full_name,
+                    email,
+                    password,
+                    gender,
+                    role: 'customer',
+                    balance
                 }
             );
             res.status(201).json({
-                "user": {
-                    "email": user.email,
-                    "full_name": user.full_name,
-                    "username": user.username,
-                    "profile_image_url": user.profile_image_url,
-                    "age": user.age,
-                    "phone_number": user.phone_number
+                user: {
+                    id: userRes.id,
+                    full_name: userRes.full_name,
+                    email: userRes.email,
+                    gender: userRes.gender,
+                    balance: convertRupiah.convert(userRes.balance),
+                    createdAt: userRes.createdAt
                 }
             });
-        } catch (error) {
-            next(error);
+        } catch (err) {
+            console.log(err)
+            next(err);
         }
     }
+
     static async signIn(req, res, next){
         const { email, password } = req.body;
         try {
@@ -42,6 +43,7 @@ class UsersController {
             const token = sign({ id: user.id, email: user.email });
             res.status(200).json({ token });
         } catch (error) {
+            console.log(error)
             next(error);
         }
     }

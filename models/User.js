@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            // define association here
+            
         }
     }
     User.init(
@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
             },
             role: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true,

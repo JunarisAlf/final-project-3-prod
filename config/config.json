@@ -1,24 +1,26 @@
 {
   "development": {
-    "username": "root",
-    "password": "root",
-    "database": "toko_belanja_db",
-    "host": "127.0.0.1",
+    "username": "postgres",
+    "password": "BqnZ8gZIUVxxVHPya1DO",
+    "database": "railway",
+    "host": "containers-us-west-134.railway.app",
     "dialect": "postgres",
-    "logging": false
+    "port": 5760
   },
   "test": {
     "username": "postgres",
-    "password": "root",
-    "database": "toko_belanja_db",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "password": "BqnZ8gZIUVxxVHPya1DO",
+    "database": "railway",
+    "host": "containers-us-west-134.railway.app",
+    "dialect": "postgres",
+    "port": 5760
   },
   "production": {
     "username": "postgres",
-    "password": "root",
-    "database": "toko_belanja_db",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "password": "BqnZ8gZIUVxxVHPya1DO",
+    "database": "railway",
+    "host": "containers-us-west-134.railway.app",
+    "dialect": "postgres",
+    "port": 5760
   }
 }

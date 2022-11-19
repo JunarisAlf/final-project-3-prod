@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const userRouter = require('./users-router');
+const categoryRouter = require('./category-router');
+
 
 
 
@@ -13,7 +15,7 @@ router.post('/users/register', UsersController.signUp);
 
 router.use(authMiddleware);
 router.use(userRouter);
-// router.use('/photos', photosRouter);
+router.use(categoryRouter);
 // router.use('/comments', commentsRouter);
 
 

@@ -38,7 +38,7 @@ class UsersController {
             if (!user) throw {name: 'EmailNotFound'};
             if (!compare(password, hash(password)))
                 throw {name: 'WrongPassword'};
-            const token = sign({id: user.id, email: user.email});
+            const token = sign({id: user.id, email: user.email, role: user.role});
             res.status(200).json({token});
         } catch (error) {
             next(error);

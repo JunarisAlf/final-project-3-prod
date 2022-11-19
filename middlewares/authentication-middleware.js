@@ -7,10 +7,10 @@ async function authenticationMiddleware(req, res, next) {
     if (!authorization) throw { name: 'NoAuthorization' };
     token = authorization.split('Bearer ');
     if (token.length !== 2) throw { name: 'InvalidToken' };
-    const { id, email } = verify(token[1]);
+    const { id, email, role} = verify(token[1]);
     const user = await User.findOne({ where: { id, email } });
     if (!user) throw { name: 'Unauthorized' };
-    req.user = { id, email };
+    req.user = { id, email, role };
     next();
   } catch (error) {
     console.log(error);

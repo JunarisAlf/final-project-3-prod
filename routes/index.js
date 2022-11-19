@@ -12,7 +12,7 @@ router.post('/users/login', UsersController.signIn);
 router.post('/users/register', UsersController.signUp);
 
 router.use(authMiddleware);
-router.use('/users', userRouter);
+router.use(userRouter);
 // router.use('/photos', photosRouter);
 // router.use('/comments', commentsRouter);
 

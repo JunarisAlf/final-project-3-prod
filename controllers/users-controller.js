@@ -1,22 +1,20 @@
-const { hash, compare } = require('../helpers/hash');
-const { sign, verify } = require('../helpers/jwt');
-const { User } = require('../models/index');
-const convertRupiah = require('rupiah-format')
+const {hash, compare} = require('../helpers/hash');
+const {sign} = require('../helpers/jwt');
+const {User} = require('../models/index');
+const convertRupiah = require('rupiah-format');
 
 class UsersController {
-    static async signUp(req, res, next){
-        const { full_name, password, gender, email } = req.body;
+    static async signUp(req, res, next) {
+        const {full_name, password, gender, email} = req.body;
         try {
-            const userRes = await User.create(
-                {
-                    full_name,
-                    email,
-                    password,
-                    gender,
-                    role: 'customer',
-                    balance
-                }
-            );
+            const userRes = await User.create({
+                full_name,
+                email,
+                password,
+                gender,
+                role: 'customer',
+                balance: 0,
+            });
             res.status(201).json({
                 user: {
                     id: userRes.id,
@@ -24,69 +22,89 @@ class UsersController {
                     email: userRes.email,
                     gender: userRes.gender,
                     balance: convertRupiah.convert(userRes.balance),
-                    createdAt: userRes.createdAt
-                }
+                    createdAt: userRes.createdAt,
+                },
             });
         } catch (err) {
-            console.log(err)
             next(err);
         }
     }
 
-    static async signIn(req, res, next){
-        const { email, password } = req.body;
+    static async signIn(req, res, next) {
+        const {email, password} = req.body;
         try {
-            if (!email || !password) throw { name: 'EmailOrPasswordEmpty' };
-            const user = await User.findOne({ where: { email } });
-            if(!user) throw { name: 'EmailNotFound' };
-            if(!compare(password, hash(password))) throw { name: 'WrongPassword' };
-            const token = sign({ id: user.id, email: user.email });
-            res.status(200).json({ token });
+            if (!email || !password) throw {name: 'EmailOrPasswordEmpty'};
+            const user = await User.findOne({where: {email}});
+            if (!user) throw {name: 'EmailNotFound'};
+            if (!compare(password, hash(password)))
+                throw {name: 'WrongPassword'};
+            const token = sign({id: user.id, email: user.email});
+            res.status(200).json({token});
         } catch (error) {
-            console.log(error)
             next(error);
         }
     }
-    static async update(req, res, next){
-        const { email, full_name, username, profile_image_url, age, phone_number } = req.body;
-        const { userId } = req.params;
+    static async update(req, res, next) {
+        const {full_name, email} = req.body;
+        const userId = req.params.userId;
         try {
             const user = await User.update(
                 {
-                    email: email,
-                    full_name: full_name,
-                    username: username,
-                    profile_image_url: profile_image_url,
-                    age: age,
-                    phone_number: phone_number
+                    email,
+                    full_name,
                 },
                 {
-                    where:{
-                        id: userId
-                    }
+                    where: {
+                        id: userId,
+                    },
+                    returning: true,
+                    plain: true,
                 }
             );
             res.status(200).json({
-                "email": email,
-                "full_name": full_name,
-                "username": username,
-                "profile_image_url": profile_image_url,
-                "age": age,
-                "phone_number": phone_number
+                user: {
+                    id: user[1].id,
+                    full_name: user[1].full_name,
+                    email: user[1].email,
+                    createdAt: user[1].createdAt,
+                    updatedAt: user[1].updatedAt,
+                },
             });
         } catch (error) {
             next(error);
         }
     }
-    static async delete(req, res, next){
-        const { userId } = req.params;
+    static async delete(req, res, next) {
+        const {userId} = req.params;
         try {
-            const user = await User.destroy({ where: { id: userId } });
+            const user = await User.destroy({where: {id: userId}});
             res.status(200).json({
-                "message": "Your account has been successfully deleted"
+                message: 'Your account has been successfully deleted',
             });
         } catch (error) {
             next(error);
+        }
+    }
+    static async topup(req, res, next) {
+        const {balance} = req.body
+        const userId = req.user.id;
+        try {
+            const user = await User.findOne({
+                where: {id: userId},
+                attributes: ['balance']
+            });
+
+            let balanceNow = balance + user.balance;
+            await User.update(
+                {balance: balanceNow},
+                {where: {id: userId}}
+            );
+            balanceNow = convertRupiah.convert(balanceNow)
+            res.status(200).json({
+                message: 'Your balance has been successfully updated to ' + balanceNow,
+            });
+        } catch (err) {
+            next(err);
         }
     }
 }

@@ -16,6 +16,7 @@ class ProductController {
                 product,
             });
         } catch (err) {
+            console.log(err)
             next(err);
         }
     }
@@ -30,6 +31,7 @@ class ProductController {
                 products,
             });
         } catch (err) {
+            console.log(err)
             next(err);
         }
     }
@@ -57,6 +59,7 @@ class ProductController {
                 product: product[1],
             });
         } catch (err) {
+            console.log(err)
             next(err);
         }
     }
@@ -90,6 +93,7 @@ class ProductController {
                 message: 'Product has been successfully deleted',
             });
         } catch (err) {
+            console.log(err)
             next(err);
         }
     }

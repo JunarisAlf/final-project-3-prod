@@ -70,6 +70,7 @@ class TransactionController {
                 },
             });
         } catch (err) {
+            console.log(err)
             next(err);
         }
     }
@@ -89,6 +90,7 @@ class TransactionController {
                 transactionHistories: trxHis,
             });
         } catch (err) {
+            console.log(err)
             next(err);
         }
     }

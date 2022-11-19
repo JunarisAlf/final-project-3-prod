@@ -12,6 +12,7 @@ class CategoryController{
                 category
             })
         }catch(err){
+            console.log(err)
             next(err)
         }
     }
@@ -25,6 +26,7 @@ class CategoryController{
                 categories
             })
         }catch(err){
+            console.log(err)
             next(err)
         }
     }
@@ -47,6 +49,7 @@ class CategoryController{
                 category: category[1]
             })
         }catch(err){
+            console.log(err)
             next(err)
         }
     }
@@ -59,6 +62,7 @@ class CategoryController{
                 message: "Category has been successfully deleted"
             });
         }catch(err){
+            console.log(err)
             next(err)
         }
     }

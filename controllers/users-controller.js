@@ -26,6 +26,7 @@ class UsersController {
                 },
             });
         } catch (err) {
+            console.log(err)
             next(err);
         }
     }
@@ -41,6 +42,7 @@ class UsersController {
             const token = sign({id: user.id, email: user.email, role: user.role});
             res.status(200).json({token});
         } catch (error) {
+            console.log(error)
             next(error);
         }
     }
@@ -71,6 +73,7 @@ class UsersController {
                 },
             });
         } catch (error) {
+            console.log(error)
             next(error);
         }
     }
@@ -82,6 +85,7 @@ class UsersController {
                 message: 'Your account has been successfully deleted',
             });
         } catch (error) {
+            console.log(error)
             next(error);
         }
     }
@@ -104,6 +108,7 @@ class UsersController {
                 message: 'Your balance has been successfully updated to ' + balanceNow,
             });
         } catch (err) {
+            console.log(err)
             next(err);
         }
     }

@@ -24,7 +24,7 @@ function errorMiddleware(error, req, res, next) {
   ) {
     code = 401;
     message = 'wrong email/password';
-  } else if (error.name === 'SequelizeUniqueConstraintError') {
+  } else if (error.name === 'SequelizeUniqueConstraintError' || error.name == 'BadRequest') {
     code = 400;
     message = 'bad request';
   } else if (error.name === 'PageNotFound') {

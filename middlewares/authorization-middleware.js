@@ -16,10 +16,21 @@ async function authorizationUser(req, res, next){
     }
 }
 
-async function authorizationAdmin(req, res, next){
+async function authorizationIsCustomer(req, res, next){
     const role = req.user.role
     try {
-        if(role !== 'admin') throw { name: 'unauthorized' };
+        if(role !== 'customer') throw { name: 'Unauthorized' };
+        next()
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+async function authorizationIsAdmin(req, res, next){
+    const role = req.user.role
+    try {
+        if(role !== 'admin') throw { name: 'Unauthorized' };
         next()
     } catch (error) {
         next(error);
@@ -28,5 +39,7 @@ async function authorizationAdmin(req, res, next){
 
 module.exports = {
     authorizationUser,
-    authorizationAdmin
+    authorizationIsAdmin,
+    authorizationIsCustomer
+
 };
